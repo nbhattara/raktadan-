@@ -1,0 +1,450 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+// Nepal Districts Enum
+enum District {
+  morang
+  Jhapa
+  Ilam
+  Taplejung
+  Panchthar
+  Terhathum
+  Sankhuwasabha
+  Bhojpur
+  Dhankuta
+  Khotang
+  Solukhumbu
+  Okhaldhunga
+  Udayapur
+  Saptari
+  Siraha
+  Dhanusa
+  Mahottari
+  Sarlahi
+  Rautahat
+  Bara
+  Parsa
+  Chitwan
+  Makwanpur
+  Ramechhap
+  Sindhuli
+  Kathmandu
+  Lalitpur
+  Bhaktapur
+  Kavrepalanchok
+  Dhading
+  Nuwakot
+  Rasuwa
+  Sindhupalchok
+  Dolakha
+  Mahagadhi
+  Baglung
+  Mustang
+  Myagdi
+  Parbat
+  Kaski
+  Lamjung
+  Gorkha
+  Manang
+  Syangja
+  Tanahu
+  Kapilvastu
+  Rupandehi
+  Nawalparasi
+  Palpa
+  Arghakhanchi
+  Gulmi
+  Pyuthan
+  Rolpa
+  Rukum
+  Salyan
+  Dang
+  Banke
+  Bardiya
+  Kailali
+  Kanchanpur
+  Doti
+  Dadeldhura
+  Baitadi
+  Darchula
+  Sudurpaschim
+}
+
+enum BloodGroup {
+  A_POSITIVE
+  A_NEGATIVE
+  B_POSITIVE
+  B_NEGATIVE
+  AB_POSITIVE
+  AB_NEGATIVE
+  O_POSITIVE
+  O_NEGATIVE
+}
+
+enum Gender {
+  MALE
+  FEMALE
+  OTHER
+}
+
+enum UserRole {
+  SUPER_ADMIN
+  HOSPITAL_ADMIN
+  BLOOD_BANK_STAFF
+  DONOR
+  RECIPIENT
+}
+
+enum DonationType {
+  WHOLE_BLOOD
+  PLATELETS
+  PLASMA
+}
+
+enum RequestStatus {
+  PENDING
+  APPROVED
+  FULFILLED
+  CANCELLED
+  EXPIRED
+}
+
+enum UrgencyLevel {
+  LOW
+  MEDIUM
+  HIGH
+  CRITICAL
+}
+
+enum ServiceType {
+  GOVERNMENT
+  PRIVATE
+  NGO
+  HOSPITAL_BASED
+}
+
+enum VehicleType {
+  BASIC
+  ADVANCED
+  ICU
+  NEONATAL
+}
+
+enum CampStatus {
+  UPCOMING
+  ONGOING
+  COMPLETED
+  CANCELLED
+}
+
+model User {
+  id              String    @id @default(cuid())
+  name            String
+  email           String    @unique
+  password        String
+  phone           String    @unique
+  bloodGroup      BloodGroup?
+  age             Int?
+  gender          Gender?
+  address         String?
+  city            String?
+  state           String?
+  district        District?
+  pincode         String?
+  
+  // Role and permissions
+  role            UserRole  @default(DONOR)
+  isDonor         Boolean   @default(false)
+  isRecipient     Boolean   @default(false)
+  canToggleRole   Boolean   @default(true) // Allow users to switch between DONOR/RECIPIENT
+  
+  // Donor specific fields
+  isAvailable     Boolean   @default(true)
+  lastDonation    DateTime?
+  medicalConditions Json? // Store as JSON for MySQL compatibility
+  totalDonations  Int       @default(0)
+  badges          Json? // Store as JSON for MySQL compatibility
+  
+  // Hospital/Blood Bank specific fields
+  hospitalName    String?
+  hospitalId      String?
+  department      String?
+  staffId         String?
+  workShift       Json? // {from, to, days}
+  
+  // Common fields
+  emergencyContact Json? // Store as JSON for flexibility
+  profilePhotoUrl String?
+  fcmToken        String?
+  isEmailVerified Boolean   @default(false)
+  emailVerificationToken String?
+  passwordResetToken String?
+  passwordResetExpires DateTime?
+  memberSince     DateTime  @default(now())
+  coordinates     Json? // {latitude, longitude}
+  isActive        Boolean   @default(true)
+  isApproved      Boolean   @default(false) // For hospital staff
+  approvedBy      String?
+  approvedAt      DateTime?
+  lastLoginAt     DateTime?
+  
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  // Relations
+  donationRecords DonationRecord[]
+  bloodRequests   BloodRequest[]
+  createdCamps    DonationCamp[]
+  registeredCamps DonationCamp[] @relation("CampRegistrations")
+  sentNotifications Notification[] @relation("SentNotifications")
+  receivedNotifications Notification[] @relation("ReceivedNotifications")
+  managedHospitals Hospital[] @relation("HospitalAdmin")
+  managedBloodBanks BloodBank[] @relation("BloodBankAdmin")
+
+  @@map("users")
+}
+
+model Hospital {
+  id              String    @id @default(cuid())
+  name            String
+  email           String    @unique
+  phone           String
+  address         String
+  city            String
+  state           String
+  district        District
+  pincode         String
+  type            String    // Government, Private, NGO
+  licenseNumber   String    @unique
+  capacity        Int       // Bed capacity
+  bloodBankAvailable Boolean @default(true)
+  emergencyServices Boolean @default(true)
+  coordinates     Json?     // {latitude, longitude}
+  isActive        Boolean   @default(true)
+  isVerified      Boolean   @default(false)
+  verifiedBy      String?
+  verifiedAt      DateTime?
+  adminId         String    // Hospital Admin
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  // Relations
+  admin User @relation("HospitalAdmin", fields: [adminId], references: [id], onDelete: Cascade)
+  bloodRequests BloodRequest[]
+  donationCamps DonationCamp[]
+
+  @@map("hospitals")
+}
+
+model BloodBank {
+  id              String    @id @default(cuid())
+  name            String
+  email           String    @unique
+  phone           String
+  address         String
+  city            String
+  state           String
+  district        District
+  pincode         String
+  type            String    // Government, Private, Hospital-based
+  licenseNumber   String    @unique
+  operatingHours  Json      // {from, to, days}
+  coordinates     Json?     // {latitude, longitude}
+  isActive        Boolean   @default(true)
+  isVerified      Boolean   @default(false)
+  verifiedBy      String?
+  verifiedAt      DateTime?
+  adminId         String    // Blood Bank Admin
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  // Relations
+  admin User @relation("BloodBankAdmin", fields: [adminId], references: [id], onDelete: Cascade)
+
+  @@map("blood_banks")
+}
+
+model DonationRecord {
+  id            String        @id @default(cuid())
+  donorId       String
+  donationDate  DateTime      @default(now())
+  donationType  DonationType
+  location      String
+  organization  String?
+  verified      Boolean       @default(false)
+  verifiedBy    String?
+  verifiedDate  DateTime?
+  notes         String?
+  units         Int           @default(1)
+  recipientInfo Json?         // {patientName, hospital, urgency}
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+
+  // Relations
+  donor User @relation(fields: [donorId], references: [id], onDelete: Cascade)
+
+  @@map("donation_records")
+}
+
+model BloodRequest {
+  id                    String        @id @default(cuid())
+  patientName           String
+  patientAge            Int
+  patientGender         Gender
+  bloodGroup            BloodGroup
+  unitsRequired         Int
+  urgency               UrgencyLevel  @default(MEDIUM)
+  hospitalName          String
+  hospitalAddress       String
+  hospitalCity          String
+  hospitalState         String
+  hospitalPincode       String
+  hospitalPhone         String
+  doctorName            String
+  doctorPhone           String
+  medicalReason         String
+  requiredBy            DateTime
+  contactPerson         String
+  contactPersonPhone    String
+  additionalNotes       String?
+  status                RequestStatus @default(PENDING)
+  donorsResponded       Json // Store as JSON for MySQL compatibility
+  unitsFulfilled        Int           @default(0)
+  requestDate           DateTime      @default(now())
+  requestedBy           String        // Recipient user ID
+  hospitalId            String?       // Hospital ID if created by hospital staff
+  createdAt             DateTime      @default(now())
+  updatedAt             DateTime      @updatedAt
+
+  // Relations
+  requester User @relation(fields: [requestedBy], references: [id], onDelete: Cascade)
+  hospital Hospital? @relation(fields: [hospitalId], references: [id], onDelete: SetNull)
+
+  @@map("blood_requests")
+}
+
+model AmbulanceService {
+  id                   String        @id @default(cuid())
+  name                 String
+  phoneNumber          String
+  alternatePhoneNumber String?
+  district             District
+  city                 String
+  serviceArea          Json // Store as JSON for MySQL compatibility
+  is24Hours            Boolean       @default(false)
+  serviceType          ServiceType   @default(PRIVATE)
+  vehicleType          VehicleType   @default(BASIC)
+  facilities           Json // Store as JSON for MySQL compatibility
+  averageResponseTime  Int?          // in minutes
+  serviceCharges       Json // Store as JSON for pricing
+  operatingHours       Json // {from, to, days}
+  specialServices      Json // Store as JSON for MySQL compatibility
+  verified             Boolean       @default(false)
+  verifiedBy           String?
+  rating               Float         @default(0.0)
+  totalRatings         Int           @default(0)
+  coordinates          Json?         // {latitude, longitude}
+  isActive             Boolean       @default(true)
+  createdAt            DateTime      @default(now())
+  updatedAt            DateTime      @updatedAt
+
+  @@map("ambulance_services")
+}
+
+model DonationCamp {
+  id                    String        @id @default(cuid())
+  title                 String
+  description           String
+  organizer             String
+  organizerPhone        String
+  organizerEmail        String
+  venue                 String
+  address               String
+  city                  String
+  state                 String
+  pincode               String
+  startDate             DateTime
+  endDate               DateTime
+  startTime             String
+  endTime               String
+  targetDonations       Int
+  currentDonations      Int           @default(0)
+  bloodGroupsNeeded     Json // Store as JSON for MySQL compatibility
+  requirements          Json // Store as JSON for MySQL compatibility
+  facilities            Json // Store as JSON for MySQL compatibility
+  status                CampStatus    @default(UPCOMING)
+  coordinates           Json?         // {latitude, longitude}
+  images                Json // Store as JSON for MySQL compatibility
+  contactPerson         String
+  contactPersonPhone    String
+  additionalInfo        String?
+  registrationRequired  Boolean       @default(false)
+  maxParticipants      Int?
+  createdBy             String
+  hospitalId            String?       // Hospital ID if created by hospital
+  createdAt             DateTime      @default(now())
+  updatedAt             DateTime      @updatedAt
+
+  // Relations
+  creator User @relation(fields: [createdBy], references: [id], onDelete: Cascade)
+  participants User[] @relation("CampRegistrations")
+  hospital Hospital? @relation(fields: [hospitalId], references: [id], onDelete: SetNull)
+
+  @@map("donation_camps")
+}
+
+model Notification {
+  id              String        @id @default(cuid())
+  recipientId      String
+  type             NotificationType
+  title            String
+  message          String
+  senderId         String?
+  senderType        SenderType   @default(SYSTEM)
+  donationId       String?
+  metadata          Json?         // Additional notification data
+  isRead           Boolean       @default(false)
+  priority         Priority     @default(MEDIUM)
+  readAt           DateTime?
+  createdAt        DateTime      @default(now())
+  updatedAt        DateTime      @updatedAt
+
+  // Relations
+  recipient User @relation("ReceivedNotifications", fields: [recipientId], references: [id], onDelete: Cascade)
+  sender User?  @relation("SentNotifications", fields: [senderId], references: [id], onDelete: Cascade)
+
+  @@map("notifications")
+}
+
+enum NotificationType {
+  DONATION_IMPACT
+  BULK_NOTIFICATION
+  SYSTEM_UPDATE
+  BADGE_EARNED
+  APPOINTMENT_REMINDER
+  EMERGENCY_REQUEST
+  DONATION_REMINDER
+}
+
+enum SenderType {
+  SYSTEM
+  USER
+  ADMIN
+  HOSPITAL
+}
+
+enum Priority {
+  LOW
+  MEDIUM
+  HIGH
+  CRITICAL
+}
