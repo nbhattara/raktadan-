@@ -1,10 +1,10 @@
 {
   "version": 2,
   "name": "raktadan-backend",
-  "functions": {
-    "api/*.js": {
-      "runtime": "nodejs18.x",
-      "maxDuration": 10
-    }
-  }
+  "builds": [
+    { "src": "src/app.js", "use": "@vercel/node" }
+  ],
+  "routes": [
+    { "src": "/(.*)", "dest": "src/app.js" }
+  ]
 }
