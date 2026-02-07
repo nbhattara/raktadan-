@@ -1,227 +1,285 @@
 # Raktadan Backend
 
-A comprehensive blood donation management system backend built with Node.js, Express, and MySQL for Nepal.
+🩸 **A comprehensive blood donation platform backend API serving Nepal's healthcare community**
 
-## Features
+## 🚀 **Production-Ready Features**
 
-- **Multi-Role User System**: SUPER_ADMIN, HOSPITAL_ADMIN, BLOOD_BANK_STAFF, DONOR, RECIPIENT
-- **Role Toggle**: Users can switch between DONOR and RECIPIENT roles
-- **Blood Requests**: Create, search, and respond to blood donation requests
-- **Donation Impact Notifications**: Real-time notifications when blood saves lives
-- **Donation Camps**: Organize and manage blood donation camps
-- **Ambulance Services**: Emergency ambulance coordination
-- **Hospital Management**: Hospital and blood bank administration
-- **Emergency Response**: Critical blood and ambulance services
-- **Real-time Search**: Find blood donors and requests by location and blood group
-- **Secure Authentication**: JWT-based authentication with role-based access control
-- **Rate Limiting**: API protection against abuse
-- **Input Validation**: Comprehensive request validation using Joi
+### ✅ **Complete API Endpoints**
+- **🔐 Authentication** - JWT-based with OTP verification
+- **👥 User Management** - Donors, recipients, hospital admins
+- **🏥 Hospital Directory** - Search and manage hospitals
+- **🚑 Ambulance Services** - Emergency medical transport
+- **🩸 Blood Requests** - Real-time blood requirement tracking
+- **🏕️ Donation Camps** - Community blood drive management
+- **📊 Inventory Tracking** - Blood stock monitoring
+- **📈 Analytics Dashboard** - Comprehensive statistics
+- **📍 District Coverage** - All 77 districts of Nepal
 
-## Tech Stack
+### 🛡️ **Security Features**
+- JWT authentication with refresh tokens
+- OTP-based registration system
+- Rate limiting and request throttling
+- Input validation and sanitization
+- CORS configuration
+- Helmet security headers
+- SQL injection prevention
+- XSS protection
 
-- **Runtime**: Node.js
-- **Framework**: Express.js
-- **Language**: JavaScript (ES2020+)
-- **Database**: MySQL with Prisma ORM
-- **Authentication**: JWT (JSON Web Tokens)
-- **Security**: Helmet, CORS, bcrypt
-- **Validation**: Joi
-- **Rate Limiting**: express-rate-limit
-- **Notifications**: Firebase Admin SDK, Nodemailer
-- **PDF Generation**: PDFKit for donor cards
+### 📱 **Frontend Integration**
+- Complete SPA frontend included
+- Real-time search functionality
+- Responsive design for all devices
+- Progressive Web App features
+- Offline functionality
 
-## Prerequisites
+## 🛠️ **Installation & Setup**
 
-- Node.js (v18 or higher)
-- MySQL (v8.0 or higher)
-- Redis (optional, for caching)
+### **Prerequisites**
+- Node.js 18+ 
+- MySQL 8.0+
 - npm or yarn
 
-## Installation
+### **Quick Start**
+```bash
+# Clone the repository
+git clone <repository-url>
+cd raktadan-backend
 
-1. **Clone the repository**
-   ```bash
-   git clone <repository-url>
-   cd raktadan-backend
-   ```
+# Install dependencies
+npm install
 
-2. **Install dependencies**
-   ```bash
-   npm install
-   ```
+# Set up environment variables
+cp .env.example .env
+# Edit .env with your database credentials
 
-3. **Environment Setup**
-   Copy the `.env` file and update the configuration:
-   ```bash
-   cp .env.example .env
-   ```
-   
-   Update the following variables in `.env`:
-   ```env
-   PORT=3000
-   NODE_ENV=development
-   MONGODB_URI=mongodb://localhost:27017/raktadan
-   JWT_SECRET=your-super-secret-jwt-key-change-this-in-production
-   JWT_EXPIRE=7d
-   BCRYPT_ROUNDS=12
-   
-   # CORS Configuration
-   FRONTEND_URL=http://localhost:3001
-   
-   # Rate Limiting
-   RATE_LIMIT_WINDOW_MS=900000
-   RATE_LIMIT_MAX_REQUESTS=100
-   ```
+# Database setup
+npx prisma migrate dev
+npx prisma generate
 
-4. **Database Setup**
-   Ensure MongoDB is running on your system. The application will automatically connect to the database specified in `MONGODB_URI`.
+# Seed sample data (optional)
+npm run seed:all
 
-## Running the Application
+# Start development server
+npm run dev
 
-### Development Mode
+# Start production server
+npm run prod
+```
+
+### **Environment Variables**
+```env
+# Database
+DATABASE_URL="mysql://username:password@localhost:3306/raktadan"
+
+# JWT
+JWT_SECRET="your-super-secret-jwt-key"
+JWT_EXPIRES_IN="7d"
+
+# Server
+PORT=3000
+NODE_ENV=production
+
+# Email (for OTP)
+SMTP_HOST="smtp.gmail.com"
+SMTP_PORT=587
+SMTP_USER="your-email@gmail.com"
+SMTP_PASS="your-app-password"
+
+# Firebase (optional)
+FIREBASE_PROJECT_ID="your-project-id"
+FIREBASE_PRIVATE_KEY="your-private-key"
+FIREBASE_CLIENT_EMAIL="firebase-adminsdk-xxx@your-project.iam.gserviceaccount.com"
+```
+
+## 📊 **Available Scripts**
 
 ```bash
-npm run dev
+# Development
+npm run dev          # Start with nodemon
+npm run start        # Start production server
+
+# Database
+npm run prisma:studio    # Open Prisma Studio
+npm run prisma:migrate   # Run migrations
+npm run prisma:generate  # Generate Prisma client
+npm run prisma:deploy    # Deploy migrations to production
+
+# Data Seeding
+npm run seed:hospitals   # Seed hospital data
+npm run seed:ambulances  # Seed ambulance data
+npm run seed:camps      # Seed donation camps
+npm run seed:all        # Seed all sample data
+
+# Quality Assurance
+npm run test           # Run tests with coverage
+npm run lint           # Check code quality
+npm run lint:fix       # Fix linting issues
+npm run format         # Format code with Prettier
+
+# Production
+npm run build          # Build for production
+npm run prod           # Start in production mode
+npm run clean          # Clean and reinstall dependencies
 ```
 
-The server will start on `http://localhost:3000` with hot reload enabled.
+## 🔌 **API Documentation**
 
-### Production Mode
+### **Base URL**
+```
+Development: http://localhost:3000/api
+Production: https://your-domain.com/api
+```
 
-1. **Build the application**
-   ```bash
-   npm run build
-   ```
-
-2. **Start the server**
-   ```bash
-   npm start
-   ```
-
-## API Endpoints
-
-### Authentication
-
-- `POST /api/auth/register` - Register a new user
-- `POST /api/auth/login` - User login
-- `GET /api/auth/profile` - Get user profile (protected)
-- `PUT /api/auth/profile` - Update user profile (protected)
-
-### Blood Requests
-
-- `POST /api/blood-requests` - Create a blood request (protected)
-- `GET /api/blood-requests` - Get blood requests (protected, paginated)
-- `GET /api/blood-requests/search` - Search blood requests (protected)
-- `POST /api/blood-requests/:requestId/respond` - Respond to blood request (protected)
-- `PUT /api/blood-requests/:requestId/status` - Update request status (admin/hospital only)
-
-### Donation Camps
-
-- `POST /api/donation-camps` - Create donation camp (admin/hospital only)
-- `GET /api/donation-camps` - Get donation camps (public, paginated)
-- `GET /api/donation-camps/:campId` - Get specific donation camp (public)
-- `POST /api/donation-camps/:campId/register` - Register for camp (protected)
-- `PUT /api/donation-camps/:campId` - Update camp (admin/hospital only)
-- `DELETE /api/donation-camps/:campId` - Delete camp (admin only)
-
-### Health Check
-
-- `GET /api/health` - Check API health status
-
-## API Response Format
-
-All API responses follow a consistent format:
-
-### Success Response
-```json
+### **Authentication**
+```bash
+# Login
+POST /api/auth/login
 {
-  "status": "Success",
-  "message": "Operation completed successfully",
-  "data": {
-    // Response data
-  }
+  "email": "test@example.com",
+  "password": "password123"
+}
+
+# Register
+POST /api/auth/register
+{
+  "email": "user@example.com",
+  "password": "password123",
+  "name": "John Doe",
+  "phone": "9841234567"
+}
+
+# OTP Verification
+POST /api/auth/verify-otp
+{
+  "email": "user@example.com",
+  "otp": "1234"
 }
 ```
 
-### Error Response
-```json
-{
-  "status": "Error",
-  "message": "Error description",
-  "errors": [
-    // Validation errors (if any)
-  ]
-}
+### **Key Endpoints**
+
+| Endpoint | Method | Description |
+|----------|--------|-------------|
+| `/auth/login` | POST | User authentication |
+| `/users/profile` | GET/PUT | User profile management |
+| `/donors` | POST/GET | Donor registration & search |
+| `/hospitals` | GET | Hospital directory |
+| `/ambulances` | GET | Ambulance services |
+| `/blood-requests` | POST/GET | Blood request management |
+| `/donation-camps` | GET | Donation camp listings |
+| `/inventory` | GET | Blood inventory status |
+| `/stats/dashboard` | GET | Dashboard statistics |
+
+## 🏗️ **Project Structure**
+
+```
+raktadan-backend/
+├── src/
+│   ├── controllers/        # API controllers
+│   ├── middleware/         # Express middleware
+│   ├── routes/            # API routes
+│   ├── services/          # Business logic
+│   ├── seed/              # Database seeding
+│   ├── config/            # Configuration files
+│   └── app.js             # Application entry point
+├── prisma/
+│   ├── schema.prisma      # Database schema
+│   └── migrations/        # Database migrations
+├── public/
+│   ├── index.html         # Frontend SPA
+│   ├── style.css          # Frontend styles
+│   └── script.js          # Frontend logic
+└── docs/                  # Documentation
 ```
 
-## Data Models
+## 🧪 **Testing**
 
-### User
-- Personal information (name, email, phone)
-- Blood group and medical details
-- Address and location
-- Emergency contact information
-- Role-based permissions (user, admin, hospital)
+```bash
+# Run all tests
+npm test
 
-### Blood Request
-- Patient information
-- Blood requirements
-- Hospital details
-- Urgency level
-- Status tracking
-- Donor responses
+# Run tests in watch mode
+npm run test:watch
 
-### Donation Camp
-- Camp details and schedule
-- Organizer information
-- Location and facilities
-- Registration management
-- Participation tracking
+# Run tests with coverage
+npm test -- --coverage
+```
 
-## Security Features
+## 🚀 **Deployment**
 
-- **Password Hashing**: Using bcryptjs with configurable salt rounds
-- **JWT Authentication**: Secure token-based authentication
-- **Rate Limiting**: Protection against API abuse
-- **Input Validation**: Comprehensive request validation
-- **CORS Configuration**: Cross-origin resource sharing setup
-- **Helmet**: Security headers configuration
+### **Vercel Deployment**
+```bash
+# Install Vercel CLI
+npm i -g vercel
 
-## Environment Variables
+# Deploy
+vercel --prod
+```
 
-| Variable | Description | Default |
-|----------|-------------|---------|
-| `PORT` | Server port | 3000 |
-| `NODE_ENV` | Environment mode | development |
-| `MONGODB_URI` | MongoDB connection string | mongodb://localhost:27017/raktadan |
-| `JWT_SECRET` | JWT signing secret | (required) |
-| `JWT_EXPIRE` | Token expiration time | 7d |
-| `BCRYPT_ROUNDS` | Password hashing rounds | 12 |
-| `FRONTEND_URL` | Allowed CORS origin | http://localhost:3001 |
-| `RATE_LIMIT_WINDOW_MS` | Rate limit window | 900000 |
-| `RATE_LIMIT_MAX_REQUESTS` | Max requests per window | 100 |
+### **Docker Deployment**
+```bash
+# Build image
+docker build -t raktadan-backend .
 
-## Scripts
+# Run container
+docker run -p 3000:3000 raktadan-backend
+```
 
-- `npm run dev` - Start development server with hot reload
-- `npm run build` - Build TypeScript to JavaScript
-- `npm start` - Start production server
-- `npm run build:watch` - Build with watch mode
-- `npm run lint` - Run ESLint
-- `npm test` - Run tests
+### **Heroku Deployment**
+```bash
+# Create Heroku app
+heroku create raktadan-backend
 
-## Contributing
+# Set environment variables
+heroku config:set NODE_ENV=production
+heroku config:set DATABASE_URL=your-production-db-url
+
+# Deploy
+git push heroku main
+```
+
+## 📈 **Performance & Monitoring**
+
+- **Winston Logging** - Structured logging with multiple levels
+- **Rate Limiting** - Prevent API abuse
+- **Health Checks** - `/api/health` endpoint
+- **Metrics** - Request/response time tracking
+- **Error Handling** - Comprehensive error management
+
+## 🔒 **Security Considerations**
+
+- All passwords are hashed with bcrypt
+- JWT tokens have expiration
+- Input validation on all endpoints
+- SQL injection prevention with Prisma ORM
+- CORS configured for production domains
+- Security headers with Helmet
+
+## 🤝 **Contributing**
 
 1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Add tests if applicable
-5. Submit a pull request
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
 
-## License
+## 📝 **License**
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## Support
+## 🆘 **Support**
 
-For any issues or questions, please create an issue in the repository or contact the development team.
+For support and questions:
+- 📧 Email: support@raktadan.com
+- 🐛 Issues: [GitHub Issues](https://github.com/your-username/raktadan-backend/issues)
+- 📖 Documentation: [Wiki](https://github.com/your-username/raktadan-backend/wiki)
+
+## 🙏 **Acknowledgments**
+
+- Nepal Red Cross Society for blood donation guidelines
+- All healthcare workers serving in Nepal
+- Open source community for amazing tools and libraries
+
+---
+
+**🩸 Made with ❤️ for Nepal's Healthcare Community** team.

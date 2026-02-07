@@ -432,6 +432,49 @@ const checkEligibilityLogic = async (userId) => {
   return { eligible: true };
 };
 
+// Register as donor
+const registerDonor = async (req, res, next) => {
+  try {
+    const { name, email, phone, bloodGroup, age, gender, district } = req.body;
+    
+    // Update user to mark as donor
+    const updatedUser = await prisma.user.update({
+      where: { id: req.user.id },
+      data: {
+        isDonor: true,
+        isAvailable: true,
+        name,
+        email,
+        phone,
+        bloodGroup,
+        age: parseInt(age),
+        gender,
+        district
+      },
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        phone: true,
+        bloodGroup: true,
+        isDonor: true,
+        isAvailable: true,
+        age: true,
+        gender: true,
+        district: true
+      }
+    });
+
+    res.json({
+      status: 'Success',
+      message: 'Successfully registered as a blood donor',
+      data: updatedUser
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   searchDonors,
   getDonorStats,
@@ -439,5 +482,6 @@ module.exports = {
   checkEligibility,
   recordDonation,
   getDonationHistory,
-  getDonorCard
+  getDonorCard,
+  registerDonor
 };

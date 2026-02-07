@@ -8,8 +8,12 @@ const donorRoutes = require('./donor.routes');
 const ambulanceRoutes = require('./ambulance.routes');
 const hospitalRoutes = require('./hospital.routes');
 const inventoryRoutes = require('./inventory.routes');
+const bloodRequestRoutes = require('./blood-request.routes');
+const donationCampRoutes = require('./donation-camp.routes');
 const emergencyRoutes = require('./emergency.routes');
 const notificationRoutes = require('./notification.routes');
+const statsRoutes = require('./stats.routes');
+const districtsRoutes = require('./districts.routes');
 
 // Root route
 router.get('/', (req, res) => {
@@ -72,10 +76,14 @@ router.use('/auth', authRoutes);
 router.use('/users', userRoutes);
 router.use('/donors', donorRoutes);
 router.use('/ambulances', ambulanceRoutes);
-router.use('/blood-requests', hospitalRoutes);
+router.use('/hospitals', hospitalRoutes);
 router.use('/inventory', inventoryRoutes);
+router.use('/blood-requests', bloodRequestRoutes);
+router.use('/donation-camps', donationCampRoutes);
 router.use('/emergency', emergencyRoutes);
 router.use('/notifications', notificationRoutes);
+router.use('/stats', statsRoutes);
+router.use('/districts', districtsRoutes);
 
 // API documentation route
 router.get('/docs', (req, res) => {

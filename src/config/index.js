@@ -112,16 +112,33 @@ const config = {
     ]
   },
   
-  // Nepal Districts
+  // Nepal Districts (77 districts across 7 provinces)
   NEPAL_DISTRICTS: [
-    'Jhapa', 'Ilam', 'Taplejung', 'Panchthar', 'Terhathum', 'Sankhuwasabha', 'Bhojpur', 'Dhankuta',
-    'Khotang', 'Solukhumbu', 'Okhaldhunga', 'Udayapur', 'Saptari', 'Siraha', 'Dhanusa', 'Mahottari',
-    'Sarlahi', 'Rautahat', 'Bara', 'Parsa', 'Chitwan', 'Makwanpur', 'Ramechhap', 'Sindhuli',
-    'Kathmandu', 'Lalitpur', 'Bhaktapur', 'Kavrepalanchok', 'Dhading', 'Nuwakot', 'Rasuwa', 'Sindhupalchok',
-    'Dolakha', 'Ramechhap', 'Sindhuli', 'Mahagadhi', 'Baglung', 'Mustang', 'Myagdi', 'Parbat',
-    'Kaski', 'Lamjung', 'Gorkha', 'Manang', 'Syangja', 'Tanahu', 'Kapilvastu', 'Rupandehi', 'Nawalparasi',
-    'Palpa', 'Arghakhanchi', 'Gulmi', 'Pyuthan', 'Rolpa', 'Rukum', 'Salyan', 'Dang', 'Banke',
-    'Bardiya', 'Kailali', 'Kanchanpur', 'Doti', 'Dadeldhura', 'Baitadi', 'Darchula', 'Sudurpaschim'
+    // Koshi Province (14)
+    'Bhojpur', 'Dhankuta', 'Ilam', 'Jhapa', 'Khotang', 'Morang', 'Okhaldhunga', 'Panchthar',
+    'Sankhuwasabha', 'Solukhumbu', 'Sunsari', 'Taplejung', 'Terhathum', 'Udayapur',
+    
+    // Madhesh Province (8)
+    'Bara', 'Dhanusa', 'Mahottari', 'Parsa', 'Rautahat', 'Saptari', 'Sarlahi', 'Siraha',
+    
+    // Bagmati Province (13)
+    'Bhaktapur', 'Chitwan', 'Dhading', 'Dolakha', 'Kathmandu', 'Kavrepalanchok', 'Lalitpur',
+    'Makwanpur', 'Nuwakot', 'Ramechhap', 'Rasuwa', 'Sindhuli', 'Sindhupalchok',
+    
+    // Gandaki Province (11)
+    'Baglung', 'Gorkha', 'Kaski', 'Lamjung', 'Manang', 'Mustang', 'Myagdi', 'Nawalpur',
+    'Parbat', 'Syangja', 'Tanahu',
+    
+    // Lumbini Province (12)
+    'Arghakhanchi', 'Banke', 'Bardiya', 'Dang', 'Gulmi', 'Kapilvastu', 'Palpa', 'Pyuthan',
+    'Rolpa', 'Rupandehi', 'Eastern Rukum', 'Nawalparasi (West of Bardaghat Susta)',
+    
+    // Karnali Province (10)
+    'Dailekh', 'Dolpa', 'Humla', 'Jajarkot', 'Jumla', 'Kalikot', 'Mugu', 'Salyan',
+    'Surkhet', 'Western Rukum',
+    
+    // Sudurpashchim Province (9)
+    'Achham', 'Baitadi', 'Bajhang', 'Bajura', 'Dadeldhura', 'Darchula', 'Doti', 'Kailali', 'Kanchanpur'
   ],
   
   // Validation patterns

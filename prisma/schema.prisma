@@ -10,73 +10,98 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// Nepal Districts Enum
+// Nepal Districts Enum (77 districts across 7 provinces)
 enum District {
-  morang
-  Jhapa
-  Ilam
-  Taplejung
-  Panchthar
-  Terhathum
-  Sankhuwasabha
+  // Koshi Province (14)
   Bhojpur
   Dhankuta
+  Ilam
+  Jhapa
   Khotang
-  Solukhumbu
+  Morang
   Okhaldhunga
+  Panchthar
+  Sankhuwasabha
+  Solukhumbu
+  Sunsari
+  Taplejung
+  Terhathum
   Udayapur
-  Saptari
-  Siraha
+  
+  // Madhesh Province (8)
+  Bara
   Dhanusa
   Mahottari
-  Sarlahi
-  Rautahat
-  Bara
   Parsa
-  Chitwan
-  Makwanpur
-  Ramechhap
-  Sindhuli
-  Kathmandu
-  Lalitpur
+  Rautahat
+  Saptari
+  Sarlahi
+  Siraha
+  
+  // Bagmati Province (13)
   Bhaktapur
-  Kavrepalanchok
+  Chitwan
   Dhading
-  Nuwakot
-  Rasuwa
-  Sindhupalchok
   Dolakha
-  Mahagadhi
+  Kathmandu
+  Kavrepalanchok
+  Lalitpur
+  Makwanpur
+  Nuwakot
+  Ramechhap
+  Rasuwa
+  Sindhuli
+  Sindhupalchok
+  
+  // Gandaki Province (11)
   Baglung
-  Mustang
-  Myagdi
-  Parbat
+  Gorkha
   Kaski
   Lamjung
-  Gorkha
   Manang
+  Mustang
+  Myagdi
+  Nawalpur
+  Parbat
   Syangja
   Tanahu
-  Kapilvastu
-  Rupandehi
-  Nawalparasi
-  Palpa
+  
+  // Lumbini Province (12)
   Arghakhanchi
-  Gulmi
-  Pyuthan
-  Rolpa
-  Rukum
-  Salyan
-  Dang
   Banke
   Bardiya
+  Dang
+  Gulmi
+  Kapilvastu
+  Palpa
+  Pyuthan
+  Rolpa
+  Rupandehi
+  EasternRukum
+  Nawalparasi
+  
+  // Karnali Province (10)
+  Dailekh
+  Dolpa
+  Humla
+  Jajarkot
+  Jumla
+  Kalikot
+  Mugu
+  Salyan
+  Surkhet
+  WesternRukum
+  
+  // Sudurpashchim Province (9)
+  Achham
+  Baitadi
+  Bajhang
+  Bajura
+  Dadeldhura
+  Darchula
+  Doti
   Kailali
   Kanchanpur
-  Doti
-  Dadeldhura
-  Baitadi
-  Darchula
-  Sudurpaschim
 }
 
 enum BloodGroup {
@@ -187,6 +212,10 @@ model User {
   fcmToken        String?
   isEmailVerified Boolean   @default(false)
   emailVerificationToken String?
+  otpSecret       String? // TOTP secret for 2FA
+  isOtpEnabled   Boolean   @default(false) // Whether 2FA is enabled
+  registrationOtp String? // OTP for email verification during registration
+  otpExpiresAt   DateTime? // OTP expiration time
   passwordResetToken String?
   passwordResetExpires DateTime?
   memberSince     DateTime  @default(now())
@@ -400,6 +429,16 @@ model DonationCamp {
   hospital Hospital? @relation(fields: [hospitalId], references: [id], onDelete: SetNull)
 
   @@map("donation_camps")
+}
+
+model DistrictData {
+  id              String    @id @default(cuid())
+  name            String    @unique
+  isActive        Boolean   @default(true)
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  @@map("district_data")
 }
 
 model Notification {

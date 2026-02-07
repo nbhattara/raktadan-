@@ -11,6 +11,7 @@ const {
 const router = express.Router();
 
 // Public endpoints
+router.get('/', getInventorySummary);
 router.get('/summary', getInventorySummary);
 
 router.get('/district', async (req, res, next) => {

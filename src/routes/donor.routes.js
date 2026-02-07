@@ -8,7 +8,8 @@ const {
   checkEligibility,
   recordDonation,
   getDonationHistory,
-  getDonorCard
+  getDonorCard,
+  registerDonor
 } = require('../controllers/donorController');
 
 const router = express.Router();
@@ -73,6 +74,7 @@ const router = express.Router();
  *               $ref: '#/components/schemas/Error'
  */
 // Public endpoints
+router.post('/', auth, registerDonor);
 router.get('/search', [
   validate(schemas.pagination, 'query'),
   validate(schemas.district, 'query'),

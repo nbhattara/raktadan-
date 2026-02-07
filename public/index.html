@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Raktadan - Nepal Blood Donation Platform. Connect blood donors with patients in need. Find hospitals, ambulances, and donation camps across Nepal.">
+    <meta name="keywords" content="blood donation, Nepal, healthcare, ambulance, hospitals, blood banks, donors, patients, emergency medical services">
+    <meta name="author" content="Raktadan Team">
+    <meta property="og:title" content="Raktadan - Nepal Blood Donation Platform">
+    <meta property="og:description" content="Connect blood donors with patients in need across Nepal. Find hospitals, ambulances, and donation camps.">
+    <meta property="og:image" content="/images/og-image.png">
+    <meta property="og:url" content="https://raktadan-frontend.vercel.app">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Raktadan - Nepal Blood Donation Platform">
+    <meta name="twitter:description" content="Connect blood donors with patients in need across Nepal.">
+    <meta name="twitter:image" content="/images/og-image.png">
+    <title>Raktadan - Nepal Blood Donation Platform</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-tint"></i>
+                    <h1>Raktadan</h1>
+                </div>
+                <nav class="nav" role="navigation" aria-label="Main navigation">
+                    <button class="nav-btn active" data-page="dashboard" aria-current="page">Dashboard</button>
+                    <button class="nav-btn" data-page="donate">Donate</button>
+                    <button class="nav-btn" data-page="request">Request</button>
+                    <button class="nav-btn" data-page="ambulance">Ambulance</button>
+                    <button class="nav-btn" data-page="hospitals">Hospitals</button>
+                    <button class="nav-btn" data-page="inventory">Inventory</button>
+                    <button class="nav-btn" data-page="camps">Camps</button>
+                    <button class="nav-btn" data-page="emergency">Emergency</button>
+                    <button class="nav-btn" data-page="profile">Profile</button>
+                    <button class="nav-btn" id="loginBtn" aria-label="Login button">Login</button>
+                    <button class="nav-btn" id="registerBtn" aria-label="Register button">Register</button>
+                    <button class="nav-btn hidden" id="logoutBtn" aria-label="Logout button">Logout</button>
+                    <button class="nav-btn diagnostic-btn" id="diagnosticBtn" onclick="switchPage('diagnostic')" title="System Diagnostic (Ctrl+D)">
+                        <i class="fas fa-stethoscope"></i>
+                    </button>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main" role="main">
+        <div class="container">
+            <!-- Dashboard Page -->
+            <section id="dashboardPage" class="page active" aria-labelledby="dashboard-heading">
+                <div class="page-header">
+                    <h1 id="dashboard-heading">Dashboard</h1>
+                    <p>Welcome to Raktadan - Your Blood Donation Hub</p>
+                </div>
+                
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <i class="fas fa-users" aria-hidden="true"></i>
+                        <h3 id="totalDonors">0</h3>
+                        <p>Total Donors</p>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fas fa-hand-holding-heart" aria-hidden="true"></i>
+                        <h3 id="totalDonations">0</h3>
+                        <p>Total Donations</p>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fas fa-hospital" aria-hidden="true"></i>
+                        <h3 id="totalHospitals">0</h3>
+                        <p>Total Hospitals</p>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fas fa-ambulance" aria-hidden="true"></i>
+                        <h3 id="totalAmbulances">0</h3>
+                        <p>Total Ambulances</p>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fas fa-calendar-alt" aria-hidden="true"></i>
+                        <h3 id="totalCamps">0</h3>
+                        <p>Total Camps</p>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fas fa-exclamation-triangle" aria-hidden="true"></i>
+                        <h3 id="urgentRequests">0</h3>
+                        <p>Urgent Requests</p>
+                    </div>
+                </div>
+
+                <div class="quick-actions">
+                    <h2>Quick Actions</h2>
+                    <div class="action-grid">
+                        <div class="action-card" onclick="switchPage('donate')">
+                            <i class="fas fa-tint"></i>
+                            <h3>Donate Blood</h3>
+                            <p>Save lives by donating blood</p>
+                        </div>
+                        <div class="action-card" onclick="switchPage('request')">
+                            <i class="fas fa-hand-holding-medical"></i>
+                            <h3>Request Blood</h3>
+                            <p>Find blood for patients</p>
+                        </div>
+                        <div class="action-card" onclick="switchPage('ambulance')">
+                            <i class="fas fa-ambulance"></i>
+                            <h3>Find Ambulance</h3>
+                            <p>Emergency medical transport</p>
+                        </div>
+                        <div class="action-card" onclick="switchPage('hospitals')">
+                            <i class="fas fa-hospital"></i>
+                            <h3>Find Hospitals</h3>
+                            <p>Locate medical facilities</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="recent-activity">
+                    <h2>Recent Activity</h2>
+                    <div id="recentActivity" class="activity-list">
+                        <!-- Activity items will be populated here -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- Donate Page -->
+            <section id="donatePage" class="page">
+                <div class="page-header">
+                    <h1>Donate Blood</h1>
+                    <p>Become a hero - Save lives by donating blood</p>
+                </div>
+
+                <div class="donation-form">
+                    <h2>Become a Donor</h2>
+                    <form id="donorForm">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="donorName">Full Name</label>
+                                <input type="text" id="donorName" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="donorEmail">Email</label>
+                                <input type="email" id="donorEmail" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="donorPhone">Phone Number</label>
+                                <input type="tel" id="donorPhone" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="donorBloodGroup">Blood Group</label>
+                                <select id="donorBloodGroup" required>
+                                    <option value="">Select Blood Group</option>
+                                    <option value="A_POSITIVE">A+</option>
+                                    <option value="A_NEGATIVE">A-</option>
+                                    <option value="B_POSITIVE">B+</option>
+                                    <option value="B_NEGATIVE">B-</option>
+                                    <option value="AB_POSITIVE">AB+</option>
+                                    <option value="AB_NEGATIVE">AB-</option>
+                                    <option value="O_POSITIVE">O+</option>
+                                    <option value="O_NEGATIVE">O-</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="donorAge">Age</label>
+                                <input type="number" id="donorAge" min="18" max="65" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="donorGender">Gender</label>
+                                <select id="donorGender" required>
+                                    <option value="">Select Gender</option>
+                                    <option value="MALE">Male</option>
+                                    <option value="FEMALE">Female</option>
+                                    <option value="OTHER">Other</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="donorDistrict">District</label>
+                                <select id="donorDistrict" required>
+                                    <option value="">Select District</option>
+                                    <!-- Districts will be populated dynamically -->
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="lastDonation">Last Donation Date</label>
+                                <input type="date" id="lastDonation">
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-large">
+                            <i class="fas fa-heart"></i>
+                            Register as Donor
+                        </button>
+                    </form>
+                </div>
+
+                <div class="donation-info">
+                    <h2>Why Donate Blood?</h2>
+                    <div class="info-grid">
+                        <div class="info-card">
+                            <i class="fas fa-heart"></i>
+                            <h3>Save Lives</h3>
+                            <p>One donation can save up to 3 lives</p>
+                        </div>
+                        <div class="info-card">
+                            <i class="fas fa-clock"></i>
+                            <h3>Quick Process</h3>
+                            <p>Donation takes only 10-15 minutes</p>
+                        </div>
+                        <div class="info-card">
+                            <i class="fas fa-shield-alt"></i>
+                            <h3>Safe Process</h3>
+                            <p>Completely safe and sterile equipment</p>
+                        </div>
+                        <div class="info-card">
+                            <i class="fas fa-medkit"></i>
+                            <h3>Health Benefits</h3>
+                            <p>Regular health check-ups included</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Request Page -->
+            <section id="requestPage" class="page">
+                <div class="page-header">
+                    <h1>Request Blood</h1>
+                    <p>Find blood donors for patients in need</p>
+                </div>
+
+                <div class="request-form">
+                    <h2>Blood Request Form</h2>
+                    <form id="bloodRequestForm">
+                        <div class="form-section">
+                            <h3>Patient Information</h3>
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label for="patientName">Patient Name</label>
+                                    <input type="text" id="patientName" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="patientAge">Patient Age</label>
+                                    <input type="number" id="patientAge" min="0" max="120" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="patientGender">Patient Gender</label>
+                                    <select id="patientGender" required>
+                                        <option value="">Select Gender</option>
+                                        <option value="MALE">Male</option>
+                                        <option value="FEMALE">Female</option>
+                                        <option value="OTHER">Other</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="requiredBloodGroup">Required Blood Group</label>
+                                    <select id="requiredBloodGroup" required>
+                                        <option value="">Select Blood Group</option>
+                                        <option value="A_POSITIVE">A+</option>
+                                        <option value="A_NEGATIVE">A-</option>
+                                        <option value="B_POSITIVE">B+</option>
+                                        <option value="B_NEGATIVE">B-</option>
+                                        <option value="AB_POSITIVE">AB+</option>
+                                        <option value="AB_NEGATIVE">AB-</option>
+                                        <option value="O_POSITIVE">O+</option>
+                                        <option value="O_NEGATIVE">O-</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="unitsRequired">Units Required</label>
+                                    <input type="number" id="unitsRequired" min="1" max="10" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="urgency">Urgency Level</label>
+                                    <select id="urgency" required>
+                                        <option value="">Select Urgency</option>
+                                        <option value="LOW">Low</option>
+                                        <option value="MEDIUM">Medium</option>
+                                        <option value="HIGH">High</option>
+                                        <option value="CRITICAL">Critical</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-section">
+                            <h3>Hospital Information</h3>
+                            <div class="form-grid">
+                                <div class="form-group full-width">
+                                    <label for="hospitalName">Hospital Name</label>
+                                    <input type="text" id="hospitalName" required>
+                                </div>
+                                <div class="form-group full-width">
+                                    <label for="hospitalDistrict">Hospital District</label>
+                                    <select id="hospitalDistrict" required>
+                                        <option value="">Select District</option>
+                                        <!-- Districts will be populated dynamically -->
+                                    </select>
+                                </div>
+                                <div class="form-group full-width">
+                                    <label for="hospitalAddress">Hospital Address</label>
+                                    <input type="text" id="hospitalAddress" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="contactPerson">Contact Person</label>
+                                    <input type="text" id="contactPerson" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="contactPhone">Contact Phone</label>
+                                    <input type="tel" id="contactPhone" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="requiredBy">Required By</label>
+                                    <input type="datetime-local" id="requiredBy" required>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary btn-large">
+                            <i class="fas fa-hand-holding-medical"></i>
+                            Submit Blood Request
+                        </button>
+                    </form>
+                </div>
+
+                <div class="requests-list">
+                    <h2>Recent Blood Requests</h2>
+                    <div id="requestsList" class="list-container">
+                        <!-- Requests will be populated here -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- Ambulance Page -->
+            <section id="ambulancePage" class="page">
+                <div class="page-header">
+                    <h1>Ambulance Services</h1>
+                    <p>Find emergency medical transport services</p>
+                </div>
+
+                <div class="filters">
+                    <div class="filter-group">
+                        <label for="locationFilter">Location</label>
+                        <input type="text" id="locationFilter" placeholder="Enter location...">
+                    </div>
+                    <div class="filter-group">
+                        <label for="availabilityFilter">Availability</label>
+                        <select id="availabilityFilter">
+                            <option value="">All</option>
+                            <option value="available">Available</option>
+                            <option value="busy">Busy</option>
+                            <option value="unavailable">Unavailable</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label for="serviceTypeFilter">Service Type</label>
+                        <select id="serviceTypeFilter">
+                            <option value="">All</option>
+                            <option value="GOVERNMENT">Government</option>
+                            <option value="PRIVATE">Private</option>
+                            <option value="NGO">NGO</option>
+                        </select>
+                    </div>
+                    <button class="btn btn-secondary" onclick="loadAmbulanceData()">
+                        <i class="fas fa-search"></i>
+                        Search
+                    </button>
+                </div>
+
+                <div id="ambulanceList" class="list-container">
+                    <!-- Ambulances will be populated here -->
+                </div>
+            </section>
+
+            <!-- Hospitals Page -->
+            <section id="hospitalsPage" class="page">
+                <div class="page-header">
+                    <h1>Hospitals & Blood Banks</h1>
+                    <p>Find hospitals and blood banks near you</p>
+                </div>
+
+                <div class="filters">
+                    <div class="filter-group">
+                        <label for="hospitalLocationFilter">Location</label>
+                        <input type="text" id="hospitalLocationFilter" placeholder="Enter city or district...">
+                    </div>
+                    <div class="filter-group">
+                        <label for="hospitalTypeFilter">Type</label>
+                        <select id="hospitalTypeFilter">
+                            <option value="">All</option>
+                            <option value="Government">Government</option>
+                            <option value="Private">Private</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label for="bloodBankFilter">Blood Bank</label>
+                        <select id="bloodBankFilter">
+                            <option value="">All</option>
+                            <option value="true">Available</option>
+                            <option value="false">Not Available</option>
+                        </select>
+                    </div>
+                    <button class="btn btn-secondary" onclick="loadHospitalData()">
+                        <i class="fas fa-search"></i>
+                        Search
+                    </button>
+                </div>
+
+                <div id="hospitalList" class="list-container">
+                    <!-- Hospitals will be populated here -->
+                </div>
+            </section>
+
+            <!-- Inventory Page -->
+            <section id="inventoryPage" class="page">
+                <div class="page-header">
+                    <h1>Blood Inventory</h1>
+                    <p>Check blood stock availability across Nepal</p>
+                </div>
+
+                <div class="filters">
+                    <div class="filter-group">
+                        <label for="inventoryLocationFilter">Location</label>
+                        <input type="text" id="inventoryLocationFilter" placeholder="Enter location...">
+                    </div>
+                    <div class="filter-group">
+                        <label for="bloodGroupFilter">Blood Group</label>
+                        <select id="bloodGroupFilter">
+                            <option value="">All</option>
+                            <option value="A_POSITIVE">A+</option>
+                            <option value="A_NEGATIVE">A-</option>
+                            <option value="B_POSITIVE">B+</option>
+                            <option value="B_NEGATIVE">B-</option>
+                            <option value="AB_POSITIVE">AB+</option>
+                            <option value="AB_NEGATIVE">AB-</option>
+                            <option value="O_POSITIVE">O+</option>
+                            <option value="O_NEGATIVE">O-</option>
+                        </select>
+                    </div>
+                    <button class="btn btn-secondary" onclick="loadInventoryData()">
+                        <i class="fas fa-search"></i>
+                        Search
+                    </button>
+                </div>
+
+                <div id="inventoryList" class="list-container">
+                    <!-- Inventory will be populated here -->
+                </div>
+            </section>
+
+            <!-- Camps Page -->
+            <section id="campsPage" class="page">
+                <div class="page-header">
+                    <h1>Blood Donation Camps</h1>
+                    <p>Upcoming blood donation camps in your area</p>
+                </div>
+
+                <div class="filters">
+                    <div class="filter-group">
+                        <label for="campLocationFilter">Location</label>
+                        <input type="text" id="campLocationFilter" placeholder="Enter location...">
+                    </div>
+                    <div class="filter-group">
+                        <label for="campStatusFilter">Status</label>
+                        <select id="campStatusFilter">
+                            <option value="">All</option>
+                            <option value="UPCOMING">Upcoming</option>
+                            <option value="ONGOING">Ongoing</option>
+                            <option value="COMPLETED">Completed</option>
+                        </select>
+                    </div>
+                    <button class="btn btn-secondary" onclick="loadCampData()">
+                        <i class="fas fa-search"></i>
+                        Search
+                    </button>
+                </div>
+
+                <div id="campList" class="list-container">
+                    <!-- Camps will be populated here -->
+                </div>
+            </section>
+
+            <!-- Emergency Page -->
+            <section id="emergencyPage" class="page">
+                <div class="page-header">
+                    <h1>Emergency Services</h1>
+                    <p>24/7 emergency blood and ambulance services</p>
+                </div>
+
+                <div class="emergency-contacts">
+                    <div class="contact-card">
+                        <i class="fas fa-phone-alt"></i>
+                        <h3>Blood Emergency</h3>
+                        <p>1155</p>
+                        <span class="contact-desc">24/7 Blood Bank Helpline</span>
+                    </div>
+                    <div class="contact-card">
+                        <i class="fas fa-ambulance"></i>
+                        <h3>Ambulance</h3>
+                        <p>1155</p>
+                        <span class="contact-desc">Emergency Medical Transport</span>
+                    </div>
+                    <div class="contact-card">
+                        <i class="fas fa-hospital"></i>
+                        <h3>Hospital</h3>
+                        <p>1155</p>
+                        <span class="contact-desc">Emergency Hospital Services</span>
+                    </div>
+                    <div class="contact-card">
+                        <i class="fas fa-shield-alt"></i>
+                        <h3>Police</h3>
+                        <p>100</p>
+                        <span class="contact-desc">Emergency Police Services</span>
+                    </div>
+                </div>
+
+                <div class="emergency-actions">
+                    <h2>Emergency Actions</h2>
+                    <div class="action-grid">
+                        <div class="action-card emergency" onclick="handleEmergencyAction('urgent-blood')">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            <h3>Urgent Blood</h3>
+                            <p>Find immediate blood donors</p>
+                        </div>
+                        <div class="action-card emergency" onclick="handleEmergencyAction('request-ambulance')">
+                            <i class="fas fa-ambulance"></i>
+                            <h3>Request Ambulance</h3>
+                            <p>Book emergency transport</p>
+                        </div>
+                        <div class="action-card emergency" onclick="handleEmergencyAction('find-hospitals')">
+                            <i class="fas fa-map-marked-alt"></i>
+                            <h3>Find Hospitals</h3>
+                            <p>Locate nearest hospitals</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Profile Page -->
+            <section id="profilePage" class="page">
+                <div class="page-header">
+                    <h1>My Profile</h1>
+                    <p>Manage your personal information and donation history</p>
+                </div>
+
+                <div class="profile-content">
+                    <div class="profile-form">
+                        <h2>Personal Information</h2>
+                        <form id="profileForm">
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label for="profileName">Full Name</label>
+                                    <input type="text" id="profileName" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="profileEmail">Email</label>
+                                    <input type="email" id="profileEmail" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="profilePhone">Phone</label>
+                                    <input type="tel" id="profilePhone" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="profileBloodGroup">Blood Group</label>
+                                    <select id="profileBloodGroup" required>
+                                        <option value="">Select Blood Group</option>
+                                        <option value="A_POSITIVE">A+</option>
+                                        <option value="A_NEGATIVE">A-</option>
+                                        <option value="B_POSITIVE">B+</option>
+                                        <option value="B_NEGATIVE">B-</option>
+                                        <option value="AB_POSITIVE">AB+</option>
+                                        <option value="AB_NEGATIVE">AB-</option>
+                                        <option value="O_POSITIVE">O+</option>
+                                        <option value="O_NEGATIVE">O-</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="profileAge">Age</label>
+                                    <input type="number" id="profileAge" min="18" max="65" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="profileGender">Gender</label>
+                                    <select id="profileGender" required>
+                                        <option value="">Select Gender</option>
+                                        <option value="MALE">Male</option>
+                                        <option value="FEMALE">Female</option>
+                                        <option value="OTHER">Other</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="profileDistrict">District</label>
+                                    <select id="profileDistrict" required>
+                                        <option value="">Select District</option>
+                                        <!-- Districts will be populated dynamically -->
+                                    </select>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save"></i>
+                                Update Profile
+                            </button>
+                        </form>
+                    </div>
+
+                    <div class="donation-history">
+                        <h2>Donation History</h2>
+                        <div id="donationHistory" class="list-container">
+                            <!-- Donation history will be populated here -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Raktadan</h3>
+                    <p>Nepal's Blood Donation Platform</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="#" onclick="switchPage('about')">About Us</a></li>
+                        <li><a href="#" onclick="switchPage('contact')">Contact</a></li>
+                        <li><a href="#" onclick="switchPage('privacy')">Privacy Policy</a></li>
+                        <li><a href="#" onclick="switchPage('terms')">Terms of Service</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Emergency</h3>
+                    <p>Blood Emergency: 1155</p>
+                    <p>Ambulance: 1155</p>
+                    <p>24/7 Helpline Available</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Raktadan. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Authentication Modal -->
+    <div id="authModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle">Login</h2>
+                <button class="close-btn" onclick="closeAuthModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <!-- Login Form -->
+            <form id="loginForm" class="auth-form">
+                <div class="form-group">
+                    <label for="loginEmail">Email or Phone</label>
+                    <input type="text" id="loginEmail" placeholder="Enter email or phone" required>
+                </div>
+                <div class="form-group">
+                    <label for="loginPassword">Password</label>
+                    <input type="password" id="loginPassword" placeholder="Enter password" required>
+                </div>
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-sign-in-alt"></i>
+                    Login
+                </button>
+                <p class="auth-switch">
+                    Don't have an account? 
+                    <a href="#" onclick="showRegisterForm()">Register here</a>
+                </p>
+            </form>
+
+            <!-- Registration Form -->
+            <form id="registrationForm" class="auth-form" style="display: none;">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="regName">Full Name</label>
+                        <input type="text" id="regName" name="regName" placeholder="Enter full name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="regEmail">Email</label>
+                        <input type="email" id="regEmail" name="regEmail" placeholder="Enter email" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="regPhone">Phone</label>
+                        <input type="tel" id="regPhone" name="regPhone" placeholder="9841234567" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="regPassword">Password</label>
+                        <input type="password" id="regPassword" name="regPassword" placeholder="Enter password" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="regAge">Age</label>
+                        <input type="number" id="regAge" name="regAge" min="18" max="65" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="regGender">Gender</label>
+                        <select id="regGender" name="regGender" required>
+                            <option value="">Select Gender</option>
+                            <option value="MALE">Male</option>
+                            <option value="FEMALE">Female</option>
+                            <option value="OTHER">Other</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group full-width">
+                        <label for="regBloodGroup">Blood Group</label>
+                        <select id="regBloodGroup" name="regBloodGroup" required>
+                            <option value="">Select Blood Group</option>
+                            <option value="A_POSITIVE">A+</option>
+                            <option value="A_NEGATIVE">A-</option>
+                            <option value="B_POSITIVE">B+</option>
+                            <option value="B_NEGATIVE">B-</option>
+                            <option value="AB_POSITIVE">AB+</option>
+                            <option value="AB_NEGATIVE">AB-</option>
+                            <option value="O_POSITIVE">O+</option>
+                            <option value="O_NEGATIVE">O-</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group full-width">
+                        <label for="regDistrict">District</label>
+                        <select id="regDistrict" name="regDistrict" required>
+                            <option value="">Select District</option>
+                            <!-- Districts will be populated dynamically -->
+                        </select>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-user-plus"></i>
+                    Register
+                </button>
+                <p class="auth-switch">
+                    Already have an account? 
+                    <a href="#" onclick="showLoginForm()">Login here</a>
+                </p>
+            </form>
+        </div>
+    </div>
+
+    <!-- Diagnostic Section (Hidden by default) -->
+    <div id="diagnosticSection" class="page" style="display: none;">
+        <div class="page-header">
+            <h1>System Diagnostic</h1>
+            <p>Test API connectivity and system status</p>
+        </div>
+        
+        <div class="diagnostic-container">
+            <div class="diagnostic-controls">
+                <button class="btn btn-primary" onclick="runDiagnosticTests()">
+                    <i class="fas fa-stethoscope"></i>
+                    Run Diagnostic Tests
+                </button>
+                <button class="btn btn-secondary" onclick="clearDiagnosticResults()">
+                    <i class="fas fa-trash"></i>
+                    Clear Results
+                </button>
+            </div>
+            
+            <div id="diagnosticResults" class="diagnostic-results">
+                <!-- Test results will be displayed here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="loading-overlay hidden">
+        <div class="loading-spinner">
+            <i class="fas fa-spinner fa-spin"></i>
+            <p>Loading...</p>
+        </div>
+    </div>
+
+    <!-- Message Toast -->
+    <div id="messageToast" class="message-toast hidden">
+        <div class="toast-content">
+            <i class="fas fa-info-circle"></i>
+            <span id="toastMessage"></span>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
