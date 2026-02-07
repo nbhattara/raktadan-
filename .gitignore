@@ -134,3 +134,6 @@ docs/build/
 # Database backups
 *.sql
 *.dump
+
+
+*.env.example

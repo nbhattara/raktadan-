@@ -1,20 +1,9 @@
 {
   "version": 2,
-  "name": "raktadan-frontend",
-  "builds": [
-    {
-      "src": "public/index.html",
-      "use": "@vercel/static"
-    }
-  ],
-  "routes": [
-    {
-      "src": "/(.*)",
-      "dest": "/public/$1"
-    }
-  ],
+  "name": "raktadan-backend",
   "functions": {
     "api/*.js": {
+      "runtime": "nodejs18.x",
       "maxDuration": 10
     }
   }
