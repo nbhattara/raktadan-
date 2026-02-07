@@ -1,10 +1,18 @@
 {
   "version": 2,
-  "name": "raktadan-backend",
   "builds": [
-    { "src": "src/app.js", "use": "@vercel/node" }
+    {
+      "src": "package.json",
+      "use": "@vercel/node"
+    }
   ],
   "routes": [
-    { "src": "/(.*)", "dest": "src/app.js" }
-  ]
+    {
+      "src": "/(.*)",
+      "dest": "/index.js"
+    }
+  ],
+  "hooks": {
+    "build": "npx prisma generate"
+  }
 }
